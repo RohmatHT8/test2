@@ -1,15 +1,18 @@
-import RowQuotes from "../component/RowQuotes";
+import RowQuotes from "../component/quote/RowQuotes";
 import { useEffect } from "react"
 import { useState } from "react"
 
 export default function Quotes() {
     const [quotes, setQuotes] = useState([])
     useEffect(() => {
-        fetch('http://localhost:3000/')
+        fetch('http://localhost:3001/', {
+            headers: {
+               access_token:localStorage.access_token 
+            }
+        })
             .then(result => result.json())
             .then(data => setQuotes(data))
     }, [])
-    console.log(quotes)
     return (
         <div className='max-w-lg mx-auto mt-3'>
             <table className="table-fixed text-left">
