@@ -17,7 +17,7 @@ export default function LoginPages() {
     }
     const handleLogin = (e) => {
         e.preventDefault()
-        fetch('http://localhost:3001/user/login', {
+        fetch('https://interview-hamparanstone.herokuapp.com/user/login', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',

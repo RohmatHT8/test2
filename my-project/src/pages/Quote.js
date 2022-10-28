@@ -5,7 +5,7 @@ import { useState } from "react"
 export default function Quotes() {
     const [quotes, setQuotes] = useState([])
     useEffect(() => {
-        fetch('http://localhost:3001/', {
+        fetch('https://interview-hamparanstone.herokuapp.com/', {
             headers: {
                access_token:localStorage.access_token 
             }

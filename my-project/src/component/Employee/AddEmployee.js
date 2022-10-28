@@ -39,7 +39,7 @@ export default function AddEmployee() {
     return (
         <section>
             <div className="container mx-auto max-w-2xl border p-5 bg-slate-100 rounded-md">
-                <h1 className="text-2xl mb-3 font-semibold"> Add Companies</h1>
+                <h1 className="text-2xl mb-3 font-semibold"> Add Employees</h1>
                 <form>
                     <div className="mb-3 flex">
                         <div className="w-full">

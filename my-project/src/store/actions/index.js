@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2'
-const baseUrl = 'http://localhost:3001'
+const baseUrl = 'https://interview-hamparanstone.herokuapp.com'
 export const succesGetCompanies = (data) => {
     return {
         type: "SUCCESS_GET_COMPANIES",
@@ -164,7 +164,7 @@ export const fetchEmployees = () => {
 
 export const fetchAddEmployee = (input, cb) => {
     return function (dispatch) {
-        fetch('http://localhost:3001/employee', {
+        fetch( baseUrl + '/employee', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

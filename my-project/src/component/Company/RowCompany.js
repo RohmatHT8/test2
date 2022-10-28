@@ -23,7 +23,7 @@ export default function RowCompany({ company, idx, companies }) {
     const [showModal, setShowModal] = useState(false)
     const showEdit = (id) => {
         setShowModal(true)
-        fetch('http://localhost:3001/company/' + id, {
+        fetch('https://interview-hamparanstone.herokuapp.com/company/' + id, {
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',

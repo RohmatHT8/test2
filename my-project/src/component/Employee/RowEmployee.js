@@ -27,7 +27,7 @@ export default function RowEmployee({ id, employee, companies, employees }) {
         })
     }
     const showEdit = (id) => {
-        fetch('http://localhost:3001/employee/' + id, {
+        fetch('https://interview-hamparanstone.herokuapp.com/employee/' + id, {
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export default function RowEmployee({ id, employee, companies, employees }) {
         dispatch(fetchDeleteEmployee(id, employees))
     } 
     const companyDetail = (id) => {
-        fetch('http://localhost:3001/company/' + id, {
+        fetch('https://interview-hamparanstone.herokuapp.com/company/' + id, {
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
