@@ -1,7 +1,12 @@
 import { useState } from "react"
 import { BiEdit } from "react-icons/bi"
 import { MdOutlineDelete } from "react-icons/md"
-export default function RowCompany({ company, idx }) {
+import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import Swal from "sweetalert2"
+import { fetchDeleteCompany, fetchEditCompany } from "../../store/actions"
+export default function RowCompany({ company, idx, companies }) {
+    const dispatch = useDispatch()
     const [input, setInput] = useState({
         name: "",
         email: '',
@@ -18,7 +23,59 @@ export default function RowCompany({ company, idx }) {
     const [showModal, setShowModal] = useState(false)
     const showEdit = (id) => {
         setShowModal(true)
-        console.log(id)
+        fetch('http://localhost:3001/company/' + id, {
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+                'access_token': localStorage.access_token
+            },
+        })
+            .then(response => response.json())
+            .then(data => setInput(data))
+    }
+    const handleSaveEdit = (id) => {
+        dispatch(fetchEditCompany(id, input, companies, () => {
+            setShowModal(false)
+        }))
+    }
+    const deleteCompany = (id) => {
+        dispatch(fetchDeleteCompany(id, companies))
+    }
+    const confirmDelete = (id) => {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteCompany(id)
+                swalWithBootstrapButtons.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelled',
+                    'Your imaginary file is safe :)',
+                    'error'
+                )
+            }
+        })
     }
     return (
         <>
@@ -69,7 +126,7 @@ export default function RowCompany({ company, idx }) {
                                     <button
                                         className="bg-sky-700 text-white hover:bg-sky-800 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                         type="button"
-                                        onClick={() => setShowModal(false)}
+                                        onClick={() => handleSaveEdit(company.id)}
                                     >
                                         Save Changes
                                     </button>
@@ -82,6 +139,7 @@ export default function RowCompany({ company, idx }) {
             ) : null}
             <tr>
                 <td className="text-center">{idx}</td>
+                <td>{company.name}</td>
                 <td>
                     <img src={company.logo} alt="logo" width={"100px"} />
                 </td>
@@ -89,7 +147,7 @@ export default function RowCompany({ company, idx }) {
                 <td>{company.website}</td>
                 <td>
                     <button className="bg-amber-400 text-slate-50 py-1 px-2 rounded-md hover:bg-amber-500 mr-2" onClick={() => showEdit(company.id)}><BiEdit className="inline mb-1" />Edit</button>
-                    <button className="bg-red-600 text-slate-50 py-1 px-2 rounded-md hover:bg-red-700 mr-2"><MdOutlineDelete className="inline mb-1" />Delete</button>
+                    <button className="bg-red-600 text-slate-50 py-1 px-2 rounded-md hover:bg-red-700 mr-2" onClick={() => confirmDelete(company.id)}><MdOutlineDelete className="inline mb-1" />Delete</button>
                 </td>
             </tr>
         </>

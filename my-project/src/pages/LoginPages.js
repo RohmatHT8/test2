@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { FiLogIn } from 'react-icons/fi'
+import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 export default function LoginPages() {
+    const navigate = useNavigate()
     const [input, setInput] = useState({
         email: '',
         password: ''
@@ -26,6 +28,7 @@ export default function LoginPages() {
             .then(data => {
                 if(!data.message) {
                     localStorage.setItem("access_token", data.access_token)
+                    navigate('/')
                 }else{
                     throw data
                 }

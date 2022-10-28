@@ -1,6 +1,10 @@
 import { useState } from "react"
-import Swal from 'sweetalert2'
+import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { fetchAddCompany } from "../../store/actions"
 export default function AddCompany() {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [input, setInput] = useState({
         name: "",
         email: '',
@@ -16,34 +20,8 @@ export default function AddCompany() {
     }
     const handleInput = (e) => {
         e.preventDefault()
-        fetch('http://localhost:3001/company', {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json',
-                "access_token": localStorage.access_token
-            },
-            body: JSON.stringify(input)
-        })
-            .then(response => response.json())
-            .then(data => {
-                if(!data.message) {
-                    Swal.fire(
-                        'Success',
-                        data.name + " Success Create",
-                        'success'
-                      )
-                }else{
-                    throw data
-                }
-            })
-            .catch(err => {
-                Swal.fire({
-                    title: 'Error!',
-                    text: err.message,
-                    icon: 'error',
-                    confirmButtonText: 'Ok'
-                  })
-            })
+        dispatch(fetchAddCompany(input))
+        navigate('/')
     } 
     return (
         <section>
